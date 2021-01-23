@@ -1,25 +1,128 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {
+	Switch,
+	Route,
+	Link as RouterLink,
+	BrowserRouter as ReactBrowser
+} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+import IsoIcon from '@material-ui/icons/Iso';
+import MenuIcon from '@material-ui/icons/Menu';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import SearchIcon from '@material-ui/icons/Search';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+	root:			{ display: 'flex' },
+	menuButton:	{ marginRight: theme.spacing(2) },
+	toolbar:		theme.mixins.toolbar,
+	drawerPaper:{ width: drawerWidth },
+	content:		{
+						flexGrow: 1,
+						padding: theme.spacing(3)
+					},
+	menuLink:	{textDecoration: "none", color: theme.palette.text.primary}
+}));
+
+function ListItemLink(props){
+	return	<RouterLink id={props.id} to={props.to} className={props.className} onClick={props.onClick}>
+					<ListItem button>
+						<ListItemIcon children={props.leftIcon}/>
+						<ListItemText className={props.className} primary={props.text} />
+					</ListItem>
+				</RouterLink>
 }
 
-export default App;
+export default function App(props) {
+	const classes = useStyles();
+	const theme = useTheme();
+	const [mobileOpen, setMobileOpen] = React.useState(false);
+	
+	const handleDrawerToggle = () => {
+		setMobileOpen(!mobileOpen);
+	};
+	const closeDrawer=()=>{
+		setMobileOpen(false);
+	}
+
+	return	<ReactBrowser>
+					<div className={classes.root}>
+						
+						<AppBar position="fixed">
+							<Toolbar>
+
+								<IconButton id="side-menu-open" color="inherit" edge="start" onClick={handleDrawerToggle} className={classes.menuButton}>
+									<MenuIcon />
+								</IconButton>
+
+								<Typography variant="h6" noWrap>
+									OTFMA
+								</Typography>
+
+							</Toolbar>
+						</AppBar>
+						<nav>
+							<Drawer id="side-menu" variant="temporary" anchor={theme.direction === 'rtl' ? 'right' : 'left'} 
+									open={mobileOpen} onClose={handleDrawerToggle} classes={{paper: classes.drawerPaper}} ModalProps={{keepMounted: true}} >
+							<div>
+								<div className={classes.toolbar} />
+								<Divider />
+								<List>
+									<ListItemLink onClick={closeDrawer} className={classes.menuLink} to="new" key="newform" leftIcon={<FlightTakeoffIcon/>} text="New W&B"/> 
+									<ListItemLink onClick={closeDrawer} className={classes.menuLink} to="find" key="recent" leftIcon={<SearchIcon/>} text="Recent"/> 
+								</List>
+								<Divider />
+								<List>
+									<ListItemLink onClick={closeDrawer} className={classes.menuLink} to="perfcalc" key="perfcalc" leftIcon={<IsoIcon/>} text="Performance Calculator"/> 
+								</List>
+							</div>
+							</Drawer>
+						</nav>
+
+						<main className={classes.content}>
+							<div className={classes.toolbar} />
+							<Switch>
+								<Route exact path='/'>
+									<div id="home-content">
+										Home
+									</div>
+								</Route>
+
+								<Route path='/new'>
+									<div id="new-content">
+										New
+									</div>
+								</Route>
+
+								<Route path='/find'>
+									<div id="find-content">
+										Find
+									</div>
+								</Route>
+
+								<Route path='/perfcalc'>
+									<div id="perfcalc-content">
+										PerfCalc
+									</div>
+								</Route>
+							</Switch>
+						</main>
+					</div>
+				</ReactBrowser>
+}
