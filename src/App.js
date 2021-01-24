@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,6 +24,8 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import SearchIcon from '@material-ui/icons/Search';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+import PerfCalc from './PerfCalc';
 
 
 const drawerWidth = 240;
@@ -67,9 +69,7 @@ export default function App(props) {
 						<AppBar position="fixed">
 							<Toolbar>
 
-								<IconButton id="side-menu-open" color="inherit" edge="start" onClick={handleDrawerToggle} className={classes.menuButton}>
-									<MenuIcon />
-								</IconButton>
+								<IconButton children={<MenuIcon />} id="side-menu-open" color="inherit" edge="start" onClick={handleDrawerToggle} className={classes.menuButton}/>
 
 								<Typography variant="h6" noWrap>
 									OTFMA
@@ -99,27 +99,27 @@ export default function App(props) {
 							<div className={classes.toolbar} />
 							<Switch>
 								<Route exact path='/'>
-									<div id="home-content">
+									<Container id="home-content">
 										Home
-									</div>
+									</Container>
 								</Route>
 
 								<Route path='/new'>
-									<div id="new-content">
+									<Container id="new-content">
 										New
-									</div>
+									</Container>
 								</Route>
 
 								<Route path='/find'>
-									<div id="find-content">
+									<Container id="find-content">
 										Find
-									</div>
+									</Container>
 								</Route>
 
 								<Route path='/perfcalc'>
-									<div id="perfcalc-content">
-										PerfCalc
-									</div>
+									<Container id="perfcalc-content" maxWidth="sm">
+										<PerfCalc/>
+									</Container>
 								</Route>
 							</Switch>
 						</main>
